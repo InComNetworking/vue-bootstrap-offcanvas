@@ -4,7 +4,7 @@
     class="offcanvas"
     :class="offcanvasClasses"
     
-    :aria-hidden="isShow"
+    :aria-hidden="!isShow"
     :aria-modal="isShow"
     :style="customStyle"
     :role="getRole"
@@ -18,11 +18,13 @@
     
   </div>
   <div
+    @scroll="scrollEvent"
+    @touchmove="scrollEvent"
     v-if="isBackdrop"
     ref="root"
     class="offcanvas-backdrop"
     :class="backdropClasses"
-    @click="cancelEvent"
+    @click="hide"
   ></div>
 </template>
 <script>
@@ -35,13 +37,17 @@ export default {
     };
   },
   emits: ["hideBsOffcanvas"],
-  props: ["placement", "dataBsBackdrop", "data-bs-scroll"],
+  props: ["placement", "dataBsBackdrop", "dataBsScroll"],
   watch: {
     isShow: function(newValue) {
       if(newValue) {
+        if(this.dataBsScroll !== true) {
+          this.disableScroll()
+        }
         this.customStyle = 'visibility: visible';
         return
       }
+      this.enableScroll();
       var self = this;
       setTimeout(function () {
         self.customStyle = "visibility: hidden;"
@@ -83,20 +89,10 @@ export default {
     },
   },
   methods: {
-    processClick: function (callback) {
-      this.isShow = false;
-      setTimeout(function () {
-        callback();
-      }, 100);
+    scrollEvent: function(e) {
+      console.log('scroll', e)
     },
-    closeEvent: function (e) {
-      this.isShow = false;
-      var self = this;
-      setTimeout(function () {
-        self.$emit("hideBsOffcanvas");
-      }, 100);
-    },
-    cancelEvent: function (e) {
+    hide: function (e) {
       if (this.$refs["root"] && this.$refs["root"] == e.target) {
         this.isShow = false;
         var self = this;
@@ -105,6 +101,12 @@ export default {
         }, 300);
       }
     },
+    disableScroll: function(){
+      document.body.style.overflow = 'hidden'
+    },
+    enableScroll: function() {
+      document.body.style.overflow = ''
+    }
   },
   mounted() {
     var self = this;

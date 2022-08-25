@@ -111,6 +111,23 @@
       Launch offcanvas bottom
     </button>
     </div>
+    <hr />
+    <label>Enable no backdrop with scroll</label>
+    <hr />
+    <div class="btn-group">
+    <button type="button" class="btn btn-primary" @click="showOffCanvas('start', false, true)">
+      Launch offcanvas start
+    </button>
+    <button type="button" class="btn btn-primary" @click="showOffCanvas('end', false, true)">
+      Launch offcanvas end
+    </button>
+    <button type="button" class="btn btn-primary" @click="showOffCanvas('top', false, true)">
+      Launch offcanvas top
+    </button>
+    <button type="button" class="btn btn-primary" @click="showOffCanvas('bottom', false, true)">
+      Launch offcanvas bottom
+    </button>
+    </div>
     {{result}}
     {{isOffCanvas}}
     <div style="padding: 100px 100px;">
@@ -128,6 +145,7 @@
       :placement="placement"
       @hide-bs-offcanvas="eventReceived"
       :data-bs-backdrop="DataBsBackdrop"
+      :data-bs-scroll="DataBsScroll"
     >
       <template v-slot:header>
         here is header
@@ -148,6 +166,7 @@ export default {
       isOffCanvas: false,
       placement: 'start',
       backdrop: true,
+      scroll: false,
       result: '',
       actionSettings: [
         {
@@ -181,10 +200,16 @@ export default {
         return false
       }
       return
+    },
+    DataBsScroll: function() {
+      if(this.scroll === true) {
+        return true
+      }
+      return
     }
   },
   methods: {
-    showOffCanvas: function(placement, backdrop) {
+    showOffCanvas: function(placement, backdrop, scroll) {
       this.placement = placement;
       this.isOffCanvas = true;
       console.log('backdrop', backdrop)
@@ -192,7 +217,10 @@ export default {
       if(backdrop === false) {
         this.backdrop = false
       }
-      console.log('this.backdrop', this.backdrop)
+      this.scroll = false
+      if(scroll === true) {
+        this.scroll = true
+      }
     },
     eventReceived: function(e, type) {
       this.isOffCanvas = false;
