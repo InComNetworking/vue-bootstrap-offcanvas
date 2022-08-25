@@ -18,11 +18,11 @@
   <div
     @scroll="scrollEvent"
     @touchmove="scrollEvent"
-    v-if="isBackdrop"
+    v-if="isBackdrop && isShow"
     ref="root"
     class="offcanvas-backdrop"
     :class="backdropClasses"
-    @click="hide"
+    @click="clickHide"
   ></div>
 </template>
 <script>
@@ -34,11 +34,12 @@ export default {
       customStyle: "visibility: hidden;",
     };
   },
-  emits: ["hideBsOffcanvas"],
+  emits: ["hideBsOffcanvas", "showBsOffcanvas", "shownBsOffcanvas"],
   props: ["placement", "dataBsBackdrop", "dataBsScroll"],
   watch: {
     isShow: function (newValue) {
       if (newValue) {
+        this.$emit("shownBsOffcanvas");
         if (this.dataBsScroll !== true) {
           this.disableScroll();
         }
@@ -92,27 +93,33 @@ export default {
     scrollEvent: function (e) {
       console.log("scroll", e);
     },
-    hide: function (e) {
+    clickHide: function (e) {
       if (this.$refs["root"] && this.$refs["root"] == e.target) {
-        this.isShow = false;
-        var self = this;
-        setTimeout(function () {
-          self.$emit("hideBsOffcanvas");
-        }, 300);
+        this.hide();
       }
     },
+    hide: function () {
+      this.isShow = false;
+      var self = this;
+      setTimeout(function () {
+        self.$emit("hideBsOffcanvas");
+      }, 300);
+    },
+
     disableScroll: function () {
       document.body.style.overflow = "hidden";
     },
     enableScroll: function () {
       document.body.style.overflow = "";
     },
+    show: function () {
+      var self = this;
+      setTimeout(function () {
+        self.isShow = true;
+        self.$emit("showBsOffcanvas");
+      }, 100);
+    },
   },
-  mounted() {
-    var self = this;
-    setTimeout(function () {
-      self.isShow = true;
-    }, 100);
-  },
+  mounted() {},
 };
 </script>

@@ -242,13 +242,32 @@
 
     <!-- Offcanvas -->
     <OffcanvasView
-      v-if="isOffCanvas"
       :placement="placement"
-      @hide-bs-offcanvas="eventReceived"
+      ref="offcanvas"
+      @show-bs-offcanvas="eventReceived('show-bs-offcanvas')"
+      @shown-bs-offcanvas="eventReceived('shown-bs-offcanvas')"
+      @hide-bs-offcanvas="hideReceived"
       :data-bs-backdrop="DataBsBackdrop"
       :data-bs-scroll="DataBsScroll"
     >
-      <template v-slot:header> here is header </template>
+      <template v-slot:header>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">
+          Colored with scrolling
+        </h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+          @click="hideCanvas"
+        ></button>
+      </template>
       <template v-slot:body>
         OffCanvas view status - <b>{{ isOffCanvas }}</b>
       </template>
@@ -265,32 +284,9 @@ export default {
       backdrop: true,
       scroll: false,
       result: "",
-      actionSettings: [
-        {
-          title: "Cancel",
-          class: "btn-secondary",
-          click: function () {
-            self.result = "Cancel clicked";
-            self.isOffCanvas = false;
-          },
-        },
-        {
-          title: "Do Danger",
-          class: "btn-danger",
-          click: function () {
-            self.result = "Danger clicked";
-          },
-        },
-        {
-          title: "Confirm",
-          class: "btn-success",
-          click: function () {
-            self.result = "Confirm clicked";
-          },
-        },
-      ],
     };
   },
+  watch: {},
   computed: {
     DataBsBackdrop: function () {
       if (this.backdrop === false) {
@@ -306,9 +302,18 @@ export default {
     },
   },
   methods: {
+    hideCanvas: function () {
+      console.log("canvas", this.$refs["offcanvas"]);
+      this.$refs["offcanvas"].hide();
+    },
     showOffCanvas: function (placement, backdrop, scroll) {
+      console.log("showOffCanvas clicked");
+      if (this.isOffCanvas) {
+        this.isOffCanvas = false;
+        //this.$refs['offcanvas'].hide();
+      }
       this.placement = placement;
-      this.isOffCanvas = true;
+
       console.log("backdrop", backdrop);
       this.backdrop = true;
       if (backdrop === false) {
@@ -318,8 +323,18 @@ export default {
       if (scroll === true) {
         this.scroll = true;
       }
+      this.isOffCanvas = true;
+      var self = this;
+      setTimeout(function () {
+        self.$refs["offcanvas"].show();
+      }, 1000);
     },
-    eventReceived: function (e, type) {
+    eventReceived: function (name) {
+      console.log("canvas", this.$refs["offcanvas"]);
+      console.log("eventReceived", name);
+    },
+    hideReceived: function (e, type) {
+      console.log("hideReceived", e, type);
       this.isOffCanvas = false;
     },
   },
