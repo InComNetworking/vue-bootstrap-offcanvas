@@ -31,14 +31,26 @@ export default {
   data() {
     return {
       isShow: false,
+      customStyle: "visibility: hidden;"
     };
   },
   emits: ["hideBsOffcanvas"],
-  props: ["placement", "data-bs-backdrop", "data-bs-scroll"],
-  watch: {},
+  props: ["placement", "dataBsBackdrop", "data-bs-scroll"],
+  watch: {
+    isShow: function(newValue) {
+      if(newValue) {
+        this.customStyle = 'visibility: visible';
+        return
+      }
+      var self = this;
+      setTimeout(function () {
+        self.customStyle = "visibility: hidden;"
+      }, 500);
+    }
+  },
   computed: {
     isBackdrop: function(){
-      if(this["data-bs-backdrop"] === false) {
+      if(this["dataBsBackdrop"] === false) {
         return false
       }
       return true
@@ -49,14 +61,8 @@ export default {
       }
       return;
     },
-    customStyle: function(){
-      if(!this.isShow) {
-        return "visibility: hidden;"
-      }
-      return 'visibility: visible';
-    },
     offcanvasClasses: function(){
-      var result = ["fade"];
+      var result = [];
       if (this.isShow) {
         result.push("show");
       }
@@ -96,7 +102,7 @@ export default {
         var self = this;
         setTimeout(function () {
           self.$emit("hideBsOffcanvas");
-        }, 100);
+        }, 300);
       }
     },
   },
