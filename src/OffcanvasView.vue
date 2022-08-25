@@ -3,7 +3,6 @@
   <div
     class="offcanvas"
     :class="offcanvasClasses"
-    
     :aria-hidden="!isShow"
     :aria-modal="isShow"
     :style="customStyle"
@@ -15,7 +14,6 @@
     <div class="offcanvas-body">
       <slot name="body"></slot>
     </div>
-    
   </div>
   <div
     @scroll="scrollEvent"
@@ -28,56 +26,58 @@
   ></div>
 </template>
 <script>
-var allowedOffcanvasPositions = ['start', 'end', 'top', 'bottom']
+var allowedOffcanvasPositions = ["start", "end", "top", "bottom"];
 export default {
   data() {
     return {
       isShow: false,
-      customStyle: "visibility: hidden;"
+      customStyle: "visibility: hidden;",
     };
   },
   emits: ["hideBsOffcanvas"],
   props: ["placement", "dataBsBackdrop", "dataBsScroll"],
   watch: {
-    isShow: function(newValue) {
-      if(newValue) {
-        if(this.dataBsScroll !== true) {
-          this.disableScroll()
+    isShow: function (newValue) {
+      if (newValue) {
+        if (this.dataBsScroll !== true) {
+          this.disableScroll();
         }
-        this.customStyle = 'visibility: visible';
-        return
+        this.customStyle = "visibility: visible";
+        return;
       }
       this.enableScroll();
       var self = this;
       setTimeout(function () {
-        self.customStyle = "visibility: hidden;"
+        self.customStyle = "visibility: hidden;";
       }, 500);
-    }
+    },
   },
   computed: {
-    isBackdrop: function(){
-      if(this["dataBsBackdrop"] === false) {
-        return false
+    isBackdrop: function () {
+      if (this["dataBsBackdrop"] === false) {
+        return false;
       }
-      return true
+      return true;
     },
-    getRole: function(){
-      if(this.isShow) {
-        return "dialog"
+    getRole: function () {
+      if (this.isShow) {
+        return "dialog";
       }
       return;
     },
-    offcanvasClasses: function(){
+    offcanvasClasses: function () {
       var result = [];
       if (this.isShow) {
         result.push("show");
       }
       var placement = "start";
-      if (this.placement 
-        && allowedOffcanvasPositions.indexOf(this.placement) !== -1) {
-        placement = this.placement
+      if (
+        this.placement &&
+        allowedOffcanvasPositions.indexOf(this.placement) !== -1
+      ) {
+        placement = this.placement;
       }
-      result.push("offcanvas-" + placement)
+      result.push("offcanvas-" + placement);
       return result.join(" ");
     },
     backdropClasses: function () {
@@ -89,8 +89,8 @@ export default {
     },
   },
   methods: {
-    scrollEvent: function(e) {
-      console.log('scroll', e)
+    scrollEvent: function (e) {
+      console.log("scroll", e);
     },
     hide: function (e) {
       if (this.$refs["root"] && this.$refs["root"] == e.target) {
@@ -101,12 +101,12 @@ export default {
         }, 300);
       }
     },
-    disableScroll: function(){
-      document.body.style.overflow = 'hidden'
+    disableScroll: function () {
+      document.body.style.overflow = "hidden";
     },
-    enableScroll: function() {
-      document.body.style.overflow = ''
-    }
+    enableScroll: function () {
+      document.body.style.overflow = "";
+    },
   },
   mounted() {
     var self = this;
