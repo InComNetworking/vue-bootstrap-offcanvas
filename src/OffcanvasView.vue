@@ -34,11 +34,13 @@
 </template>
 <script>
 var allowedOffcanvasPositions = ["start", "end", "top", "bottom"];
+var offcanvasses = []
 export default {
   data() {
     return {
       isShow: false,
       customStyle: "visibility: hidden;",
+      myPosition: 0,
     };
   },
   emits: [
@@ -47,7 +49,7 @@ export default {
     "showBsOffcanvas",
     "shownBsOffcanvas",
   ],
-  props: ["placement", "dataBsBackdrop", "dataBsScroll", "btnClose", "title"],
+  props: ["placement", "dataBsBackdrop", "dataBsScroll", "btnClose", "title", "showOnMount"],
   watch: {
     isShow: function (newValue) {
       if (newValue) {
@@ -109,6 +111,9 @@ export default {
       }
     },
     hide: function () {
+      if(!this.isShow) {
+        return
+      }
       this.isShow = false;
       var self = this;
       self.$emit("hideBsOffcanvas");
@@ -121,6 +126,19 @@ export default {
       document.body.style.overflow = "";
     },
     show: function () {
+      if(this.isShow) {
+        return;
+      }
+      // Hide any other open offcanvas
+      for(var i in offcanvasses) {
+        console.log(i, offcanvasses[i])
+        if(offcanvasses[i].isShow !== "true") {
+          offcanvasses[i].hide();
+          console.log('hide', offcanvasses[i])
+        } else {
+          console.log('no hide', offcanvasses[i].isShow)
+        }
+      }
       var self = this;
       setTimeout(function () {
         self.isShow = true;
@@ -128,6 +146,14 @@ export default {
       }, 100);
     },
   },
-  mounted() {},
+  unmounted() {
+    offcanvasses.splice(this.myPosition, 1);
+  },
+  mounted() {
+    this.myPosition = offcanvasses.push(this) -1;
+    if(this["showOnMount"]) {
+      this.show();
+    }
+  },
 };
 </script>

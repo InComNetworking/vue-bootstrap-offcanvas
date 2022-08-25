@@ -245,6 +245,7 @@
         Show Standard
       </button>
       <OffcanvasView
+        :show-on-mount="true"
         placement="start"
         ref="standard"
         @show-bs-offcanvas="eventReceived('show-bs-offcanvas')"
