@@ -10,6 +10,15 @@
   >
     <div class="offcanvas-header">
       <slot name="header"></slot>
+      <h5 v-if="title" class="offcanvas-title">{{title}}</h5>
+      <button
+        v-if="btnClose"
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+        @click="hide"
+        ></button>
     </div>
     <div class="offcanvas-body">
       <slot name="body"></slot>
@@ -34,8 +43,8 @@ export default {
       customStyle: "visibility: hidden;",
     };
   },
-  emits: ["hideBsOffcanvas", "showBsOffcanvas", "shownBsOffcanvas"],
-  props: ["placement", "dataBsBackdrop", "dataBsScroll"],
+  emits: ["hideBsOffcanvas","hiddenBsOffcanvas", "showBsOffcanvas", "shownBsOffcanvas"],
+  props: ["placement", "dataBsBackdrop", "dataBsScroll", "btnClose", "title"],
   watch: {
     isShow: function (newValue) {
       if (newValue) {
@@ -50,6 +59,7 @@ export default {
       var self = this;
       setTimeout(function () {
         self.customStyle = "visibility: hidden;";
+        self.$emit("hiddenBsOffcanvas");
       }, 500);
     },
   },
@@ -101,9 +111,8 @@ export default {
     hide: function () {
       this.isShow = false;
       var self = this;
-      setTimeout(function () {
-        self.$emit("hideBsOffcanvas");
-      }, 300);
+      self.$emit("hideBsOffcanvas");
+
     },
 
     disableScroll: function () {

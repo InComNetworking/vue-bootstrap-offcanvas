@@ -239,7 +239,31 @@
       consequat, leo eget bibendum sodales, augue velit cursus nunc,
       <hr />
     </div>
-
+    <div><label>Standart Header</label></div>
+     <div class="btn-group">
+      <button
+        type="button"
+        class="btn btn-primary"
+        @click="showStandard()"
+      >Show Standard
+    </button>
+    <OffcanvasView
+      placement="start"
+      ref="standard"
+      @show-bs-offcanvas="eventReceived('show-bs-offcanvas')"
+      @shown-bs-offcanvas="eventReceived('shown-bs-offcanvas')"
+      @hide-bs-offcanvas="hideReceived"
+      @hidden-bs-offcanvas="hiddenReceived"
+      :data-bs-backdrop="false"
+      :data-bs-scroll="true"
+      :btn-close="true"
+      title="My Standard Header"
+    >
+      <template v-slot:body>
+        OffCanvas view status - <b>{{ isOffCanvas }}</b>
+      </template>
+    </OffcanvasView>
+    </div>
     <!-- Offcanvas -->
     <OffcanvasView
       :placement="placement"
@@ -247,6 +271,7 @@
       @show-bs-offcanvas="eventReceived('show-bs-offcanvas')"
       @shown-bs-offcanvas="eventReceived('shown-bs-offcanvas')"
       @hide-bs-offcanvas="hideReceived"
+      @hidden-bs-offcanvas="hiddenReceived"
       :data-bs-backdrop="DataBsBackdrop"
       :data-bs-scroll="DataBsScroll"
     >
@@ -302,6 +327,9 @@ export default {
     },
   },
   methods: {
+    showStandard: function() {
+      this.$refs["standard"].show();
+    },
     hideCanvas: function () {
       console.log("canvas", this.$refs["offcanvas"]);
       this.$refs["offcanvas"].hide();
@@ -327,15 +355,18 @@ export default {
       var self = this;
       setTimeout(function () {
         self.$refs["offcanvas"].show();
-      }, 1000);
+      }, 300);
     },
     eventReceived: function (name) {
       console.log("canvas", this.$refs["offcanvas"]);
       console.log("eventReceived", name);
     },
+    hiddenReceived: function (e, type) {
+      console.log("hiddenReceived", e, type);
+      this.isOffCanvas = false;
+    },
     hideReceived: function (e, type) {
       console.log("hideReceived", e, type);
-      this.isOffCanvas = false;
     },
   },
   mounted() {},
