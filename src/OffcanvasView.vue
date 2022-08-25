@@ -10,7 +10,7 @@
   >
     <div class="offcanvas-header">
       <slot name="header"></slot>
-      <h5 v-if="title" class="offcanvas-title">{{title}}</h5>
+      <h5 v-if="title" class="offcanvas-title">{{ title }}</h5>
       <button
         v-if="btnClose"
         type="button"
@@ -18,15 +18,13 @@
         data-bs-dismiss="offcanvas"
         aria-label="Close"
         @click="hide"
-        ></button>
+      ></button>
     </div>
     <div class="offcanvas-body">
       <slot name="body"></slot>
     </div>
   </div>
   <div
-    @scroll="scrollEvent"
-    @touchmove="scrollEvent"
     v-if="isBackdrop && isShow"
     ref="root"
     class="offcanvas-backdrop"
@@ -43,7 +41,12 @@ export default {
       customStyle: "visibility: hidden;",
     };
   },
-  emits: ["hideBsOffcanvas","hiddenBsOffcanvas", "showBsOffcanvas", "shownBsOffcanvas"],
+  emits: [
+    "hideBsOffcanvas",
+    "hiddenBsOffcanvas",
+    "showBsOffcanvas",
+    "shownBsOffcanvas",
+  ],
   props: ["placement", "dataBsBackdrop", "dataBsScroll", "btnClose", "title"],
   watch: {
     isShow: function (newValue) {
@@ -100,9 +103,6 @@ export default {
     },
   },
   methods: {
-    scrollEvent: function (e) {
-      console.log("scroll", e);
-    },
     clickHide: function (e) {
       if (this.$refs["root"] && this.$refs["root"] == e.target) {
         this.hide();
@@ -112,7 +112,6 @@ export default {
       this.isShow = false;
       var self = this;
       self.$emit("hideBsOffcanvas");
-
     },
 
     disableScroll: function () {

@@ -240,29 +240,26 @@
       <hr />
     </div>
     <div><label>Standart Header</label></div>
-     <div class="btn-group">
-      <button
-        type="button"
-        class="btn btn-primary"
-        @click="showStandard()"
-      >Show Standard
-    </button>
-    <OffcanvasView
-      placement="start"
-      ref="standard"
-      @show-bs-offcanvas="eventReceived('show-bs-offcanvas')"
-      @shown-bs-offcanvas="eventReceived('shown-bs-offcanvas')"
-      @hide-bs-offcanvas="hideReceived"
-      @hidden-bs-offcanvas="hiddenReceived"
-      :data-bs-backdrop="false"
-      :data-bs-scroll="true"
-      :btn-close="true"
-      title="My Standard Header"
-    >
-      <template v-slot:body>
-        OffCanvas view status - <b>{{ isOffCanvas }}</b>
-      </template>
-    </OffcanvasView>
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary" @click="showStandard()">
+        Show Standard
+      </button>
+      <OffcanvasView
+        placement="start"
+        ref="standard"
+        @show-bs-offcanvas="eventReceived('show-bs-offcanvas')"
+        @shown-bs-offcanvas="eventReceived('shown-bs-offcanvas')"
+        @hide-bs-offcanvas="hideReceived"
+        @hidden-bs-offcanvas="hiddenReceived"
+        :data-bs-backdrop="false"
+        :data-bs-scroll="true"
+        :btn-close="true"
+        title="My Standard Header"
+      >
+        <template v-slot:body>
+          OffCanvas view status - <b>{{ isOffCanvas }}</b>
+        </template>
+      </OffcanvasView>
     </div>
     <!-- Offcanvas -->
     <OffcanvasView
@@ -327,7 +324,7 @@ export default {
     },
   },
   methods: {
-    showStandard: function() {
+    showStandard: function () {
       this.$refs["standard"].show();
     },
     hideCanvas: function () {
