@@ -131,12 +131,8 @@ export default {
       }
       // Hide any other open offcanvas
       for(var i in offcanvasses) {
-        console.log(i, offcanvasses[i])
         if(offcanvasses[i].isShow !== "true") {
           offcanvasses[i].hide();
-          console.log('hide', offcanvasses[i])
-        } else {
-          console.log('no hide', offcanvasses[i].isShow)
         }
       }
       var self = this;
