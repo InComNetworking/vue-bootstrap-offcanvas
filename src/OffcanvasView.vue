@@ -115,8 +115,7 @@ export default {
         return
       }
       this.isShow = false;
-      var self = this;
-      self.$emit("hideBsOffcanvas");
+      this.$emit("hideBsOffcanvas");
     },
 
     disableScroll: function () {
