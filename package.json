@@ -1,5 +1,5 @@
 {
-  "name": "@gormartsen/vue-bootstrap-offcanvas",
+  "name": "@incomnetworking/vue-bootstrap-offcanvas",
   "version": "1.1.0",
   "description": "Vue 3 bootstrap 5.1 offcanvas component",
   "main": "src/index.js",
