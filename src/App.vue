@@ -298,6 +298,7 @@
   </div>
 </template>
 <script>
+import OffcanvasView from "./OffcanvasView.vue"
 export default {
   data() {
     var self = this;
@@ -308,6 +309,9 @@ export default {
       scroll: false,
       result: "",
     };
+  },
+  components: {
+    OffcanvasView
   },
   watch: {},
   computed: {
